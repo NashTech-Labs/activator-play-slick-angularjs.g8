@@ -5,6 +5,6 @@ import views.html
 
 class Application extends Controller {
 
-  def index = Action {Ok(html.index("play-slick-angularjs App"))}
+  def index = Action {Ok(html.index())}
 
 }
