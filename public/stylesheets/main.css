@@ -1,0 +1,45 @@
+
+header {
+    border-bottom: 4px solid rgb(237, 169, 50) !important;
+    padding: 18px;
+    box-shadow: 0px 5px 10px rgb(221, 215, 215);
+}
+
+.page-header {
+    color: rgb(72, 144, 136);
+    display: inline;
+    font-weight: 600;
+    border: medium none;
+}
+
+.header-icon {
+    font-size: 28px;
+    padding-right: 8px;
+    color: rgb(153, 142, 142);
+}
+
+.emp-header {
+    padding: 15px 2px 0px 7px;
+}
+
+.add-button {
+    float: right;
+    padding: 5px 29px;
+}
+
+.cursorPointer {
+	cursor: pointer;
+}
+
+.red {
+  border: solid 1px red;
+}
+
+.alert-box {
+       position: absolute;
+       right: 36px;
+       top: -6px;
+       padding: 1 10px 50px 10px 15px;
+       vertical-align: middle;
+       box-shadow: 4px 4px 4px #B3AFAF;
+}
