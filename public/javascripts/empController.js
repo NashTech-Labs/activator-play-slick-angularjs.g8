@@ -73,21 +73,31 @@ app.controller('empCtrl', function($scope, $http, $timeout) {
 
     getAllEmployee();
 
-     $scope.alert = {};
-     $scope.showAlert = false;
+    $scope.alerts = [];
 
-     function showAlertMessage(status, message) {
-          $scope.showAlert = true;
-          if(status == "success") {
-                $scope.alert = {type: "alert-success", msg: message};
-          } else if(status == "error") {
-                 $scope.alert = {type: "alert-danger", msg: message};
-          }
-          //$timeout(function () { $scope.showAlert = false; }, 3000);
-       };
+    function showAlertMessage(status, message) {
+              if(status == "success") {
+                    $scope.alerts.push({type: "alert-success", title: "SUCCESS", content: message});
+              } else if(status == "error") {
+                     $scope.alerts.push({type: "alert-danger", title: "ERROR", content: message});
+              }
+    };
 
-     $scope.closeAlert = function(index) {
-         $scope.showAlert = false;
-         $scope.alert = {};
-      };
+});
+
+// Directive for alert notification. You can also use angular bootstrap-ui for better alert notifications
+app.directive('notification', function($timeout){
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      ngModel: '='
+    },
+    template: '<div ng-class="ngModel.type" class="alert alert-box">{{ngModel.content}}</div>',
+     link: function(scope, element, attrs) {
+          $timeout(function(){
+            element.hide();
+          }, 3000);
+      }
+  }
 });

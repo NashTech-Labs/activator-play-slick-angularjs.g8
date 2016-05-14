@@ -35,7 +35,11 @@ header {
   border: solid 1px red;
 }
 
-.alertBox {
-    padding: 7px 19px !important;
-    margin-bottom: 0px;
+.alert-box {
+       position: absolute;
+       right: 36px;
+       top: -6px;
+       padding: 1 10px 50px 10px 15px;
+       vertical-align: middle;
+       box-shadow: 4px 4px 4px #B3AFAF;
 }

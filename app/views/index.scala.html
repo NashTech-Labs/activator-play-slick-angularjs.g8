@@ -10,10 +10,9 @@
         </div>
             <!-- Alert messages -->
             <div class="col-sm-4 col-md-4 col-lg-4">
-                 <div ng-class="alert.type" ng-show="showAlert" class="alert alertBox" >
-                    <button type="button" class="close" ng-click="closeAlert()">×</button>
-                      {{alert.msg}}
-                 </div>
+                <div ng-repeat="alert in alerts">
+                <notification ng-model="alert"></notification>
+                </div>
             </div>
             <!-- Add new employee link -->
         <div class="col-sm-4 col-md-4 col-lg-4">
