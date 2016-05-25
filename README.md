@@ -8,6 +8,9 @@ This is an activator project providing a seed for starting with Play & Slick usi
       $ cd activator-play-slick-angularjs
       $ ./activator run
     
+ ![alt-tag](/public/images/evolutions.png)
+ 
+ 
  Run the all unit test:
 
      $ ./activator test
@@ -15,3 +18,29 @@ This is an activator project providing a seed for starting with Play & Slick usi
 Run the app using Postgres database:
 
      $ ./activator 'run   -Dconfig.file=conf/postgres.conf'
+
+
+-----------------------------------------------------------------------
+###All the Screens :-
+-----------------------------------------------------------------------
+### Home Page
+
+![alt-tag](/public/images/homePage.png)
+
+### Add an Employee
+
+![alt-tag](/public/images/addEmployee.png)
+
+### Edit an Employee
+
+![alt-tag](/public/images/editEmployee.png)
+
+-----------------------------------------------------------------------
+###References :-
+-----------------------------------------------------------------------
+
+* [Play 2.5.x](http://www.playframework.com)
+* [WebJars](http://www.webjars.org/)
+* [Bootstrap](http://getbootstrap.com/css/)
+* [Slick](http://slick.typesafe.com/)
+
