@@ -5,23 +5,20 @@
  * object to insert into the body of the page.
  *@
 
-@(title: String)(content: Html)
+@(title: String)(webJarAssets: WebJarAssets)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
     <head>
         <title>@title</title>
 
-        <!-- #CSS Links -->
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/bootstrap.min.css")">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
 
-        <!-- #Javascripts Links -->
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-        <script type="text/javascript" src="@routes.Assets.versioned("javascripts/bootstrap.min.js")"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+        <!-- Bootstrap 3.3.6 -->
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("css/bootstrap.min.css"))'>
+
+        <!-- Custom CSS Links -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
 
     </head>
     <body>
@@ -34,6 +31,11 @@
         <div class="container-fluid body-content">
             @content
         </div>
+
+        <!-- Plugin Javascript -->
+        <script type="text/javascript" src='@routes.WebJarAssets.at(webJarAssets.locate("jquery.min.js"))'></script>
+        <script type="text/javascript" src='@routes.WebJarAssets.at(webJarAssets.locate("js/bootstrap.min.js"))'></script>
+        <script type="text/javascript" src='@routes.WebJarAssets.at(webJarAssets.locate("angular.min.js"))'></script>
 
          <!-- #Custom Javascripts Links -->
         <script type="text/javascript" src="@routes.Assets.versioned("javascripts/empController.js")"></script>
