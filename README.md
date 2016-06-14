@@ -6,18 +6,19 @@ This is an activator project providing a seed for starting with Play & Slick usi
 
       $ git clone git@github.com:knoldus/activator-play-slick-angularjs.git
       $ cd activator-play-slick-angularjs
-      $ ./activator run
+      $ bin/activator run
     
  ![alt-tag](/public/images/evolutions.png)
  
  
  Run the all unit test:
 
-     $ ./activator test
+     $ bin/activator test
     
 Run the app using Postgres database:
 
-     $ ./activator 'run   -Dconfig.file=conf/postgres.conf'
+     $ bin/activator 'run   -Dconfig.file=conf/postgres.conf'
+
 
 
 -----------------------------------------------------------------------
