@@ -18,7 +18,7 @@
             </i>
         </td>
         <td>
-            <i title="Delete" style="color: #d85010;" class="glyphicon glyphicon-trash cursorPointer" ng-click="removeEmployee(emp.id)">
+            <i title="Delete" style="color: #d85010;" class="glyphicon glyphicon-trash cursorPointer" ng-click="deleteEmp(emp.id)">
             </i>
         </td>
     </tr>
@@ -26,3 +26,17 @@
 </table>
 
 <p style="color: rgb(110, 114, 114)">Showing <strong style="color: rgb(42, 41, 41);">{{ (employees | filter:searchEmp).length }}</strong> of <strong style="color: rgb(16, 106, 135);">{{employees.length}}</strong> entries</p>
+
+<!-- Template for confirmation dialog box -->
+<script type="text/ng-template" id="deleteEmployeeConfirmationModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Employee</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure want to delete employee?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

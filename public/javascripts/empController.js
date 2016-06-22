@@ -1,10 +1,8 @@
-var app = angular.module('myApp', []);
+var app = angular.module('myApp', ['ngAnimate', 'ui.bootstrap']);
 
-app.controller('empCtrl', function($scope, $http, $timeout) {
+app.controller('empCtrl', function($scope, $http, $timeout, $uibModal) {
 
  $scope.employees = [];
-
- $scope.newEmployee = {};
 
  function getAllEmployee() {
      $http({
@@ -35,24 +33,7 @@ app.controller('empCtrl', function($scope, $http, $timeout) {
               });
          };
 
-        $scope.removeEmployee = function(empId){
-        	        $http({
-                      method: 'GET',
-                      url: '/emp/delete',
-                      params: {empId: empId}
-                  }).success(function(data, status) {
-                      if(data.status == "success"){
-                        var newEmpList=[];
-                        angular.forEach($scope.employees,function(emp){
-                        if(emp.id != empId) {
-                                  newEmpList.push(emp);
-                             }
-                       });
-                       $scope.employees = newEmpList;
-                     }
-                     showAlertMessage(data.status, data.msg);
-                });
-          }
+    $scope.newEmployee = {};
 
     $scope.addEmployee = function() {
                   $http({
@@ -69,7 +50,42 @@ app.controller('empCtrl', function($scope, $http, $timeout) {
                          }
                          showAlertMessage(data.status, data.msg);
                    });
-        }
+     }
+
+     $scope.deleteEmp = function (empId) {
+              var modalInstance = $uibModal.open({
+                  animation: true,
+                  templateUrl: 'deleteEmployeeConfirmationModal.html',
+                  controller: 'modalInstanceCtrl'
+              });
+
+             modalInstance.result.then(function (result) {
+                if(result) {
+                   removeEmployee(empId);
+                }
+              }, function () {
+
+              });
+     };
+
+     function removeEmployee(empId){
+             	        $http({
+                           method: 'GET',
+                           url: '/emp/delete',
+                           params: {empId: empId}
+                       }).success(function(data, status) {
+                           if(data.status == "success"){
+                             var newEmpList=[];
+                             angular.forEach($scope.employees,function(emp){
+                             if(emp.id != empId) {
+                                       newEmpList.push(emp);
+                                  }
+                            });
+                            $scope.employees = newEmpList;
+                          }
+                          showAlertMessage(data.status, data.msg);
+                     });
+      }
 
     getAllEmployee();
 
@@ -82,6 +98,17 @@ app.controller('empCtrl', function($scope, $http, $timeout) {
                      $scope.alerts.push({type: "alert-danger", title: "ERROR", content: message});
               }
     };
+
+ });
+
+app.controller('modalInstanceCtrl', function ($scope, $uibModalInstance) {
+  $scope.ok = function () {
+    $uibModalInstance.close(true);
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 
 });
 

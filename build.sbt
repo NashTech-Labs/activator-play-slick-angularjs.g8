@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.3",
   "org.webjars" % "bootstrap" % "3.3.6" exclude("org.webjars", "jquery"),
   "org.webjars" % "angularjs" % "1.5.5" exclude("org.webjars", "jquery"),
+  "org.webjars" % "angular-ui-bootstrap" % "1.3.2" exclude("org.webjars", "jquery"),
   specs2 % Test
 )
 
