@@ -1,19 +1,18 @@
+
+// Main app module
 var app = angular.module('myApp', ['ui.bootstrap', 'confirmDialogBoxModule']);
 
-app.controller('empCtrl', function($scope, $http, $timeout, $uibModal) {
+app.controller('empCtrl', function($scope, $http, $timeout, $uibModal, EmpService) {
 
  $scope.employees = [];
 
- function getAllEmployee() {
-     $http({
-            method: 'GET',
-            url: '/emp/list'
-        }).success(function(data, status) {
-            if(data.status == "success"){
-              $scope.employees = data.data;
-            }
+    function getAllEmployee() {
+       EmpService.getAll().then(function(res){
+             $scope.employees = res.data;
+        }, function(err){
+           // error
         });
-  }
+     }
 
       $scope.selectedEmployee = {};
 
@@ -22,53 +21,43 @@ app.controller('empCtrl', function($scope, $http, $timeout, $uibModal) {
       };
 
       $scope.updateEmployee = function(){
-          $http({
-                  method: 'POST',
-                  url: '/emp/update',
-                  data: $scope.selectedEmployee,  // pass in form data as Json
-              }).success(function(data, status) {
-                     $('.modal').modal('hide');
-                     showAlertMessage(data.status, data.msg);
-                     getAllEmployee();
-              });
-         };
+         EmpService.updateEmployee($scope.selectedEmployee).then(function(res) {
+             $('.modal').modal('hide');
+             showAlertMessage(res.status, res.msg);
+             getAllEmployee();
+         }, function(err){
+             // error
+        });
+      }
 
     $scope.newEmployee = {};
 
     $scope.addEmployee = function() {
-                  $http({
-                      method: 'POST',
-                      url: '/emp/create',
-                      data: $scope.newEmployee,  // pass in form data as Json
-                   }).success(function(data, status) {
-                          $('.modal').modal('hide');
-                         if(data.status == "success") {
-                            var newId = data.data.id;
-                            $scope.newEmployee["id"] = newId;
-                            $scope.employees.push($scope.newEmployee);
-                            $scope.newEmployee ={};
-                         }
-                         showAlertMessage(data.status, data.msg);
-                   });
-     }
+        EmpService.addEmployee($scope.newEmployee).then(function(res) {
+                  $('.modal').modal('hide');
+                  var newId = res.data.id;
+                  $scope.newEmployee["id"] = newId;
+                  $scope.employees.push($scope.newEmployee);
+                  $scope.newEmployee ={};
+                  showAlertMessage(res.status, res.msg);
+          }, function(err){
+                // error
+          });
+    }
 
      $scope.deleteEmployee = function(empId) {
-             	        $http({
-                           method: 'GET',
-                           url: '/emp/delete',
-                           params: {empId: empId}
-                       }).success(function(data, status) {
-                           if(data.status == "success"){
-                             var newEmpList=[];
-                             angular.forEach($scope.employees,function(emp){
-                             if(emp.id != empId) {
-                                       newEmpList.push(emp);
-                                  }
-                            });
-                            $scope.employees = newEmpList;
-                          }
-                          showAlertMessage(data.status, data.msg);
-                     });
+           EmpService.deleteEmployee(empId).then(function(res){
+                       var newEmpList=[];
+                       angular.forEach($scope.employees,function(emp){
+                                if(emp.id != empId) {
+                                        newEmpList.push(emp);
+                                 }
+                        });
+                        $scope.employees = newEmpList;
+             showAlertMessage(res.status, res.msg);
+         }, function(err){
+                 // error
+          });
       }
 
     getAllEmployee();
@@ -83,11 +72,12 @@ app.controller('empCtrl', function($scope, $http, $timeout, $uibModal) {
               }
     };
 
- });
+  });
+
 
 /**
- * Directive for alert notification. You can also use angular bootstrap-ui for better alert notifications
-*/
+ * Directive for alert notification. You can also use angular ui-bootstrap for better alert notifications
+ */
 app.directive('notification', function($timeout){
   return {
     restrict: 'E',
@@ -105,10 +95,78 @@ app.directive('notification', function($timeout){
 });
 
 
+
+/**
+ * EmpService: Provides all employee services and run asynchronously
+ */
+app.service("EmpService", function($http, $q) {
+
+   var task = this;
+   task.taskList = {};
+
+   task.getAll = function() {
+          var defer = $q.defer();
+          $http.get('/emp/list')
+          .success(function(res){
+                task.taskList = res;
+                defer.resolve(res);
+           })
+           .error(function(err, status){
+              defer.reject(err);
+           });
+
+         return defer.promise;
+     }
+
+   task.deleteEmployee = function(id) {
+        var defer = $q.defer();
+        $http.get('/emp/delete?empId=' + id)
+        .success(function(res){
+               task.taskList = res;
+                defer.resolve(res);
+         }).error(function(err, status){
+               defer.reject(err);
+         });
+
+         return defer.promise
+   }
+
+   task.updateEmployee = function(data) {
+      var defer = $q.defer();
+      $http.post('/emp/update', data)
+      .success(function(res){
+               task.taskList = res;
+               defer.resolve(res);
+       }).error(function(err, status){
+                defer.reject(err);
+       });
+
+       return defer.promise
+   }
+
+   task.addEmployee = function(data) {
+         var defer = $q.defer();
+         $http.post('/emp/create', data)
+         .success(function(res){
+                task.taskList = res;
+                defer.resolve(res);
+         })
+         .error(function(err, status){
+                defer.reject(err);
+         });;
+
+          return defer.promise
+      }
+
+   return task;
+
+ });
+
+
 /**
  * Module for confirm dialog box
  * To use this, add this module as a dependency in app module.
-*/
+ */
 angular.module('confirmDialogBoxModule', ['ui.bootstrap'])
   .directive('ngConfirmClick', ['$uibModal', function($uibModal) {
 
@@ -151,4 +209,3 @@ angular.module('confirmDialogBoxModule', ['ui.bootstrap'])
       }
     }
   ]);
-  
