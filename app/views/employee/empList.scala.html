@@ -18,7 +18,7 @@
             </i>
         </td>
         <td>
-            <i title="Delete" style="color: #d85010;" class="glyphicon glyphicon-trash cursorPointer" ng-click="removeEmployee(emp.id)">
+            <i title="Delete" style="color: #d85010;" class="glyphicon glyphicon-trash cursorPointer" ng-confirm-message="Are you sure want to delete?" ng-confirm-click="deleteEmployee(emp.id)">
             </i>
         </td>
     </tr>
